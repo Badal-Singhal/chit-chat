@@ -28,6 +28,10 @@ export default function Signin() {
     signInWithProvider(new firebase.auth.GoogleAuthProvider());
     
   }
+  const onGitHubSignin=()=>{
+    signInWithProvider(new firebase.auth.GithubAuthProvider());
+    
+  }
   return (
     <Container>
       <Grid className='mt-page'>
@@ -43,6 +47,11 @@ export default function Signin() {
                 onClick={onGoogleSignin}
                   color="green" block> 
                   <Icon icon="google"/>   Continue With Google
+                </Button>
+                <Button
+                onClick={onGitHubSignin}
+                  color="cyan" block> 
+                  <Icon icon="github"/>   Continue With Github
                 </Button>
               </div>
             </Panel>
