@@ -61,6 +61,7 @@ export default function AvatarUploadBtn() {
         userAvatarRef.set(downloadUrl);
         setIsLoading(false);
         Alert.info('Avatar has been uploaded',4000);
+        close();
         
 
       } catch (err) {
@@ -86,7 +87,7 @@ export default function AvatarUploadBtn() {
             accept={avatarInputType}
             onChange={onFileInputChange}
           />
-        </label>
+        </label> 
 
         <Modal show={isOpen} onHide={close}>
           <Modal.Header>

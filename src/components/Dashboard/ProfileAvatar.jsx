@@ -6,7 +6,7 @@ export default function ProfileAvatar({name, ...props}) {
 
 
   return (
-    <Avatar size='lg' circle {...props}>
+    <Avatar  circle {...props}>
     {getNameInitials(name)}
     </Avatar>
   )
