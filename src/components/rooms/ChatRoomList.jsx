@@ -30,9 +30,7 @@ export default function ChatRoomList({ aboveElementHeight }) {
             eventKey={`/chat/${room.id}`}
           >
             <RoomItem
-              name={room.name}
-              createdAt={room.createdAt}
-              description={room.description}
+              room={room}
             />
           </Nav.Item>
         ))}

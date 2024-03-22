@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { database, storage } from '../../misc/firebase';
 import { useProfile } from '../context/profile.context';
 import ProfileAvatar from './ProfileAvatar';
+import { getUserUpdate } from '../../misc/Helper';
 
 export default function AvatarUploadBtn() {
   const avatarInputType = ' .png, .jpeg, .jpg';
@@ -57,8 +58,17 @@ export default function AvatarUploadBtn() {
           cacheControl:`public,mqax-age=${3600*24*3}`
         });
         const downloadUrl= await uploadAvatarResult.ref.getDownloadURL();
-        const userAvatarRef = database.ref(`/profiles/${profile.uid}`).child('avatar');
-        userAvatarRef.set(downloadUrl);
+
+        const updates = await getUserUpdate(
+          profile.uid,
+          'avatar',
+          downloadUrl,
+          database
+        );
+        database.ref().update(updates);
+
+        // const userAvatarRef = database.ref(`/profiles/${profile.uid}`).child('avatar');
+        // userAvatarRef.set(downloadUrl);
         setIsLoading(false);
         Alert.info('Avatar has been uploaded',4000);
         close();

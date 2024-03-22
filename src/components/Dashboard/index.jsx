@@ -4,24 +4,28 @@ import EditableInputs from './EditableInputs';
 import { database } from '../../misc/firebase';
 import ProviderBlock from './ProviderBlock';
 import AvatarUploadBtn from './AvatarUploadBtn';
-
+import { getUserUpdate } from '../../misc/Helper';
 
 const Dashboard = ({ onSignOut }) => {
   const { profile } = useProfile();
 
   const onSave = async newData => {
-    
-    const userNickNameRef=database.ref(`/profiles/${profile.uid}`).child('name');
+    // const userNickNameRef=database.ref(`/profiles/${profile.uid}`).child('name');
 
     try {
-      await userNickNameRef.set(newData);
-      Alert.success('Nickname has been updated',4000);
-      
+      // await userNickNameRef.set(newData);
+
+      const updates = await getUserUpdate(
+        profile.uid,
+        'name',
+        newData,
+        database
+      );
+      database.ref().update(updates);
+      Alert.success('Nickname has been updated', 4000);
     } catch (error) {
-      Alert.error(error.message,4000);
-      
+      Alert.error(error.message, 4000);
     }
-    
   };
 
   return (
@@ -32,7 +36,7 @@ const Dashboard = ({ onSignOut }) => {
 
       <Drawer.Body>
         <h3>Hey, {profile.name}</h3>
-        <ProviderBlock/>
+        <ProviderBlock />
         <Divider />
         <EditableInputs
           name="nickname"
@@ -40,8 +44,7 @@ const Dashboard = ({ onSignOut }) => {
           onSave={onSave}
           label={<h6 className="mb-2">Nickname</h6>}
         />
-        <AvatarUploadBtn/>
-        
+        <AvatarUploadBtn />
       </Drawer.Body>
       <Drawer.Footer>
         <Button block color="red" onClick={onSignOut}>
