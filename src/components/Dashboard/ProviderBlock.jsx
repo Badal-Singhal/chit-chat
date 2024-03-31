@@ -4,6 +4,7 @@ import { Alert, Button, Icon, Tag } from 'rsuite';
 import firebase from "firebase/app";
 
 export default function ProviderBlock() {
+  
   const [isConnected, setIsConnected] = useState({
     'google.com': auth.currentUser.providerData.some(
       data => data.providerId === 'google.com'
