@@ -53,6 +53,7 @@ export default function Bottom() {
       setIsLoading(false);
     } catch (error) {
       Alert.error(error.message);
+      Alert.error("Not allowed for anonymous user")
     }
   };
 

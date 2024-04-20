@@ -1,5 +1,5 @@
 import {
-    Alert,
+  Alert,
   Button,
   ControlLabel,
   Form,
@@ -11,8 +11,8 @@ import {
 } from 'rsuite';
 import { useModalState } from '../misc/Custom-hooks';
 import { useCallback, useRef, useState } from 'react';
-import firebase from "firebase/app";
-import { database } from '../misc/firebase';
+import firebase from 'firebase/app';
+import { auth, database } from '../misc/firebase';
 
 const { StringType } = Schema.Types;
 
@@ -37,26 +37,28 @@ export default function CreateRoomBtnModal() {
   }, []);
 
   const onSubmit = async () => {
-    if(!formRef.current.check()){
-        return;
+    if (!formRef.current.check()) {
+      return;
     }
 
     setIsLoading(true);
-    const newRoomData={
-        ...formValue,
-        createdAt:firebase.database.ServerValue.TIMESTAMP
-    }
+    const newRoomData = {
+      ...formValue,
+      createdAt: firebase.database.ServerValue.TIMESTAMP,
+      admins:{
+        [auth.currentUser.uid]:true,
+      }
+    };
 
     try {
-        await database.ref('rooms').push(newRoomData);
-        Alert.info(`${formValue.name} has been created`,4000);
-        setIsLoading(false);
-        setformValue(INITIAL_FORM);
-        close();
-        
+      await database.ref('rooms').push(newRoomData);
+      Alert.info(`${formValue.name} has been created`, 4000);
+      setIsLoading(false);
+      setformValue(INITIAL_FORM);
+      close();
     } catch (error) {
-        setIsLoading(false);
-        Alert.error(error.message,4000);
+      setIsLoading(false);
+      Alert.error(error.message, 4000);
     }
   };
 
@@ -94,7 +96,12 @@ export default function CreateRoomBtnModal() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button block appearance="primary" onClick={onSubmit} disabled={isLoading}>
+          <Button
+            block
+            appearance="primary"
+            onClick={onSubmit}
+            disabled={isLoading}
+          >
             Create New Chat Room
           </Button>
         </Modal.Footer>

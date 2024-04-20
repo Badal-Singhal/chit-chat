@@ -1,5 +1,5 @@
 
-import { Alert, Button, Drawer, Icon } from 'rsuite'
+import { Alert, Button, Drawer, Icon, Modal } from 'rsuite'
 import { useMediaQuery, useModalState } from '../../misc/Custom-hooks'
 import Dashboard from '.';
 import { useCallback } from 'react';

@@ -29,7 +29,11 @@ export const ProfileProvider = ({ children }) => {
         userRef = database.ref(`/profiles/${authObj.uid}`);
 
         userRef.on('value', snap => {
-          const { name, createdAt, avatar } = snap.val();
+          const profileData = snap.val();
+          console.log(profileData)
+
+          if (profileData) {
+            const { name, createdAt, avatar } = profileData;   
 
           const data = {
             name,
@@ -40,8 +44,18 @@ export const ProfileProvider = ({ children }) => {
           };
 
           setProfile(data);
-          setIsLoading(false);
-        });
+        } else {
+
+          const data = {
+            name:"Anonymous",
+            uid: authObj.uid,
+          };
+          console.log(data)
+          setProfile(data);
+        }
+
+        setIsLoading(false);
+      });
 
         database.ref('.info/connected').on('value', snapshot => {
           if (!!snapshot.val() === false) {
